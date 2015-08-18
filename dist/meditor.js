@@ -66,6 +66,28 @@ angular.module('angular-meditor', [])
       ];
       scope.size = scope.sizeOptions[0].value;
 
+      // fontColor options
+      scope.colorOptions = [
+        {
+          label: 'red',
+          value: 'red'
+        },
+        {
+          label: 'green',
+          value: 'green'
+        },
+        {
+          label: 'blue',
+          value: 'blue'
+        },
+        {
+          label: 'yellow',
+          value: 'yellow'
+        },
+
+      ];
+      scope.color = scope.colorOptions[0].value;
+
       scope.familyOptions = [
         {
           label: 'Open Sans',
@@ -287,6 +309,15 @@ angular.module('angular-meditor', [])
         scope.$broadcast('meditor-change');
       });
 
+      // watch the font color selector
+      scope.$watch('color', function() {
+        document.execCommand('styleWithCSS', false, false);
+        document.execCommand('foreColor', false, scope.color);
+
+        // custom event for two-way binding
+        scope.$broadcast('meditor-change');
+      });
+
       // watch the font family selector
       scope.$watch('family', function() {
         // dynamically load the family from google fonts
@@ -398,7 +429,12 @@ angular.module('angular-meditor').run(['$templateCache', function($templateCache
     "      </li>\n" +
     "      <li>\n" +
     "        <label class=\"meditor-select\">\n" +
-    "          <select ng-model=\"family\" ng-options=\"s as s.label for s in familyOptions\" class=\"meditor-family-selector\"></select>\n" +
+    "          <select ng-model=\"color\" ng-options=\"s.value as s.label for s in colorOptions\" class=\"meditor-color-selector\"></select>\n" +
+    "        </label>\n" +
+    "      </li>\n" +
+    "      <li>\n" +
+    "        <label class=\"meditor-select\">\n" +
+    "          <select ng-model=\"family\" ng-options=\"s as s.label for s in familyOptions\" class=\"meditor-family-selector\" ></select>\n" +
     "        </label>\n" +
     "      </li>\n" +
     "    </ul>\n" +
